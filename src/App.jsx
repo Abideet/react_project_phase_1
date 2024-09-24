@@ -1,7 +1,7 @@
 import './App.css';
 import DataTable from 'react-data-table-component';
 //import { tableCustomStyles } from './tableStyle.jsx';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 
 function App() {
@@ -25,50 +25,32 @@ function App() {
     }
   ];
 
+  //in memory data
   const data = [{id:1,name:"Bradney Cockerill",email:"bcockerill0@reddit.com",password:"gI9$+#'oEg>#u"},
                 {id:2,name:"Amalea Anan",email:"aanan1@cdbaby.com",password:"rL4@RGYr{8qjX"}];
 
-  
-
-  // const columns = 
-  // [
-  //   {
-  //     name: 'Name',
-  //     selector: "name",
-  //     sortable: true,
-  //   },
-  //   {
-  //     name: 'Email',
-  //     selector: "email",
-  //     sortable: true
-  //   },
-  //   {
-  //     name: 'Password',
-  //     selector: "password",
-  //     sortable: true
-  //   }
-  // ];
-
-  // const data = [{id:1,name:"Bradney Cockerill",email:"bcockerill0@reddit.com",password:"gI9$+#'oEg>#u"},
-  //               {id:2,name:"Amalea Anan",email:"aanan1@cdbaby.com",password:"rL4@RGYr{8qjX"}];
-
   const [selectedRows, setSelectedRows] = useState([]);
 
-  const tableCustomStyles = {
-    cells: {
-      style: (row) =>  ({
-        fontWeight: selectedRows.includes(row.name) ? 'bold' : 'normal',
-      }),
+  //conditionalRowStyles object with two properties: when and style
+  const conditionalRowStyles = [
+    {
+      //when is a function that takes row as an arugument and returns true if 
+      //the selected row has an id that matches the current rows id.
+      when: row => selectedRows.some(selectedRow => selectedRow.id 
+        === row.id),
+        //style to apply when condition is true
+        style: {
+          fontWeight: 'bold',
+        },
     },
-  };
+  ];
 
-  const handleChange = ({ selectedRows }) => {
-    // You can set state or dispatch with something like Redux so we can use the retrieved data
-    //console.log('Selected Rows: ', selectedRows);
-    setSelectedRows(selectedRows.map(row => row.name));
+
+  //useCallback caches the table so it isnt re-rendered everytime
+  const handleChange = useCallback(({ selectedRows }) => {
+    setSelectedRows(selectedRows);
     console.log('Selected Rows: ', selectedRows);
-
-  };
+  },[]);
 
   const handleSave = () => {
     console.log("Save button")
@@ -77,9 +59,6 @@ function App() {
   const handleDelete = () => {
     console.log("Delete button")
   }
-
-
-
 
   return (
 
@@ -92,7 +71,7 @@ function App() {
 
       <DataTable 
         columns={columns} data={data} 
-        customStyles={tableCustomStyles}
+        conditionalRowStyles={conditionalRowStyles}
         onSelectedRowsChange={handleChange}
         selectableRows />
          
