@@ -1,7 +1,10 @@
 import './App.css';
 import DataTable from 'react-data-table-component';
 //import { tableCustomStyles } from './tableStyle.jsx';
+import data1 from './data.json';
+
 import { useCallback, useState } from 'react';
+import Form from "./components/Form"
 
 
 function App() {
@@ -24,10 +27,6 @@ function App() {
       sortable: true
     }
   ];
-
-  //in memory data
-  const data = [{id:1,name:"Bradney Cockerill",email:"bcockerill0@reddit.com",password:"gI9$+#'oEg>#u"},
-                {id:2,name:"Amalea Anan",email:"aanan1@cdbaby.com",password:"rL4@RGYr{8qjX"}];
 
   const [selectedRows, setSelectedRows] = useState([]);
 
@@ -52,31 +51,22 @@ function App() {
     console.log('Selected Rows: ', selectedRows);
   },[]);
 
-  const handleSave = () => {
-    console.log("Save button")
-  }
-
-  const handleDelete = () => {
-    console.log("Delete button")
-  }
-
   return (
-
    <div className="App">
-
       <header className="fw-bold">
         Customer List
       </header>
-      
 
       <DataTable 
-        columns={columns} data={data} 
+        columns={columns} data={data1} 
         conditionalRowStyles={conditionalRowStyles}
         onSelectedRowsChange={handleChange}
         selectableRows />
+
+
+      <Form/>
          
-        <button onClick={handleSave}>Save</button>
-        <button onClick={handleDelete}>Delete</button>
+        
       
     </div>
   );
