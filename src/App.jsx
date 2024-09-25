@@ -1,73 +1,129 @@
+import React, {useState, useEffect} from 'react';
+import { getAll, post, put, deleteById } from './data.js'
 import './App.css';
-import DataTable from 'react-data-table-component';
-//import { tableCustomStyles } from './tableStyle.jsx';
-import data1 from './data.json';
 
-import { useCallback, useState } from 'react';
-import Form from "./components/Form"
+function log(message){console.log(message);}
 
+export function App(params) {
 
-function App() {
+  let blankCustomer = { "id": -1, "name": "", "email": "", "password": "" };
+  
+  const [customers, setCustomers] = useState([]);
+  const [formObject, setFormObject] = useState(blankCustomer);
+  let mode = (formObject.id >= 0) ? 'Update' : 'Add';
 
-  const columns = 
-  [
-    {
-      name: 'Name',
-      selector: row => row.name,
-      sortable: true,
-    },
-    {
-      name: 'Email',
-      selector: row => row.email,
-      sortable: true
-    },
-    {
-      name: 'Password',
-      selector: row => row.password,
-      sortable: true
+  useEffect(() => { getCustomers() }, []);
+  
+  const getCustomers =  function(){
+    console.log("in getCustomers()");
+    setCustomers(getAll());
+  }
+
+  const handleListClick = function(item){
+    console.log("in handleListClick()");
+    if(formObject.id === item.id){
+      setFormObject(blankCustomer);
+    }else{
+      setFormObject(item);
     }
-  ];
+  }  
 
-  const [selectedRows, setSelectedRows] = useState([]);
+  const handleInputChange = function (event) {
+    console.log("in handleInputChange()");
+    const name = event.target.name;
+    const value = event.target.value;
+    let newFormObject = {...formObject}
+    newFormObject[name] = value;
+    setFormObject(newFormObject);
+  }
 
-  //conditionalRowStyles object with two properties: when and style
-  const conditionalRowStyles = [
-    {
-      //when is a function that takes row as an arugument and returns true if 
-      //the selected row has an id that matches the current rows id.
-      when: row => selectedRows.some(selectedRow => selectedRow.id 
-        === row.id),
-        //style to apply when condition is true
-        style: {
-          fontWeight: 'bold',
-        },
-    },
-  ];
+  let onCancelClick = function () {
+    console.log("in onCancelClick()");
+    setFormObject(blankCustomer);
+  }
 
+  let onDeleteClick = function () {
+    console.log('delete clicked');
+  }
 
-  //useCallback caches the table so it isnt re-rendered everytime
-  const handleChange = useCallback(({ selectedRows }) => {
-    setSelectedRows(selectedRows);
-    console.log('Selected Rows: ', selectedRows);
-  },[]);
+let onSaveClick = function () {
+  console.log('save clicked');
+}
 
   return (
-   <div className="App">
-      <header className="fw-bold">
-        Customer List
-      </header>
-
-      <DataTable 
-        columns={columns} data={data1} 
-        conditionalRowStyles={conditionalRowStyles}
-        onSelectedRowsChange={handleChange}
-        selectableRows />
-
-
-      <Form/>
-         
-        
-      
+    <div>
+      <div className="boxed" >
+        <h4>Customer List</h4>
+        <table id="customer-list">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Pass</th>
+            </tr>
+          </thead>
+          <tbody>
+            {customers.map(
+              (item, index) => {
+                return (<tr key={item.id} 
+                className={ (item.id === formObject.id )?'selected': ''}
+                onClick={()=>handleListClick(item)} 
+                >
+                  <td>{item.name}</td>
+                  <td>{item.email}</td>
+                  <td>{item.password}</td>
+                </tr>);
+              }
+            )}
+          </tbody>
+        </table>
+    </div>
+    <div className="boxed">
+      <div>
+        <h4>{mode}</h4>
+      </div>
+      <form >
+        <table id="customer-add-update" >
+          <tbody>
+            <tr>
+              <td className={'label'} >Name:</td>
+              <td><input
+                type="text"
+                name="name"
+                onChange={(e) => handleInputChange(e)}
+                value={formObject.name}
+                placeholder="Customer Name"
+                required /></td>
+            </tr>
+            <tr>
+              <td className={'label'} >Email:</td>
+              <td><input
+                type="email"
+                name="email"
+                onChange={(e) => handleInputChange(e)}
+                value={formObject.email}
+                placeholder="name@company.com" /></td>
+            </tr>
+            <tr>
+              <td className={'label'} >Pass:</td>
+              <td><input
+                type="text"
+                name="password"
+                onChange={(e) => handleInputChange(e)}
+                value={formObject.password}
+                placeholder="password" /></td>
+            </tr>
+            <tr className="button-bar">
+              <td colSpan="2">
+                <input type="button" value="Delete" onClick={onDeleteClick} />
+                <input type="button" value="Save" onClick={onSaveClick} />
+                <input type="button" value="Cancel" onClick={onCancelClick} />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
     </div>
   );
 }
