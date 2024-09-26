@@ -23,6 +23,7 @@ export function get(id)
 
 export function deleteCustomer(id)
 {
+
     items = items.filter(items => items.id !== id);
     return items;
 }
@@ -31,6 +32,27 @@ export function postCustomer(name, email, password)
 {
     let id = getNextID();
     items.push({id, name, email, password});
+    return items;
+}
+
+export function putCustomer(id, name, email, password)
+{
+    //creating a new array for immutability
+    const newItems = [...items];
+
+
+    for(let i = 0; i < newItems.length; ++i)
+    {
+        if(newItems[i]['id'] === id)
+        {
+            newItems[i].name = name;
+            newItems[i].email = email;
+            newItems[i].password = password;
+            break;
+        }
+    }
+
+    items = newItems; // Update the original array
     return items;
 }
 

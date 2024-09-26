@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { getAll, post, put, deleteCustomer, postCustomer } from './data.js'
+import { getAll, post, putCustomer, deleteCustomer, postCustomer } from './data.js'
 import './App.css';
 
 function log(message){console.log(message);}
@@ -32,7 +32,8 @@ export function App(params) {
   }
 
 
-  const handleInputChange = function(event){
+  const handleInputChange = function(event)
+  {
     const name = event.currentTarget.name;
     const value = event.currentTarget.value;
     let newFormObject = {...formObject};
@@ -47,8 +48,6 @@ export function App(params) {
     {
       setCustomers(deleteCustomer(formObject.id));
     }
-      
-
   }
 
   const onSaveClick = function()
@@ -56,7 +55,14 @@ export function App(params) {
     if(mode === 'Add'){
       let newItems = postCustomer(formObject.name, formObject.email, formObject.password);
       setCustomers(newItems);
+    } 
+    if(mode === 'Update')
+    {
+      let newItems = putCustomer(formObject.id, formObject.name, formObject.email, formObject.password);
+      console.log(newItems);
+      setCustomers(newItems);
     }
+
     setFormObject(blankCustomer);
   }
 
