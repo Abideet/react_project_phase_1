@@ -43,8 +43,11 @@ export function App(params) {
 
   const onDeleteClick = function()
   {
-    
-    setCustomers(deleteCustomer(formObject.id));
+    if (window.confirm('Are you sure you want to delete this customer?')) 
+    {
+      setCustomers(deleteCustomer(formObject.id));
+    }
+      
 
   }
 

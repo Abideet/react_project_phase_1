@@ -23,8 +23,8 @@ export function get(id)
 
 export function deleteCustomer(id)
 {
-    let newItems = items.filter(items => items.id !== id);
-    return newItems;
+    items = items.filter(items => items.id !== id);
+    return items;
 }
 
 export function postCustomer(name, email, password)
