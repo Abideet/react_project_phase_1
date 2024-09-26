@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { getAll, post, put, deleteCustomer } from './data.js'
+import { getAll, post, put, deleteCustomer, postCustomer } from './data.js'
 import './App.css';
 
 function log(message){console.log(message);}
 
 export function App(params) {
 
-  let blankCustomer = {"id": -1, "name": "", "email": ""}
+  let blankCustomer = {"id": -1, "name": "", "email": "", "password": ""};
 
   const [customers, setCustomers] = useState([]);
 
@@ -50,7 +50,10 @@ export function App(params) {
 
   const onSaveClick = function()
   {
-    console.log("save clicked");
+    if(mode === 'Add'){
+      let newItems = postCustomer(formObject.name, formObject.email, formObject.password);
+      setCustomers(newItems);
+    }
   }
 
   const onCancelClick = function()

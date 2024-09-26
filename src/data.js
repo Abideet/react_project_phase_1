@@ -24,6 +24,24 @@ export function get(id)
 export function deleteCustomer(id){
 
     let newItems = items.filter(items => items.id !== id);
-    console.log(newItems);
     return newItems;
 }
+
+export function postCustomer(name, email, password)
+{
+    let id = getNextID();
+    items.push({id, name, email, password});
+    return items;
+}
+
+
+function getNextID()
+{
+    let maxid = 0;
+    for(let item of items)
+    {
+        maxid = (item.id > maxid)? item.id : maxid;
+    }
+    return maxid + 1;
+}
+
