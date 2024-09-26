@@ -1,30 +1,11 @@
 import {useState} from 'react';
 import data from '../data';
 
-function CustomerForm(props){
-
-  const [record, setRecord] = useState({data});
-  const [name, setName] = useState('');
-
-  const handleSave = () => {
-      console.log("Save button")
-    }
-  
-    const handleDelete = () => {
-      console.log("Delete button")
-    }
-  
-    const handleUpdate = () => {
-      setRecord({
-        ...record,
-        name: name
-      });
-    }
-
+function CustomerForm(props)
+{
   return (
-
         <div>
-          <h4>{mode}</h4>
+          <h4>{props.mode}</h4>
           <div>
           <form >
             <table id="customer-add-update" >
@@ -34,8 +15,8 @@ function CustomerForm(props){
                   <td><input
                     type="text"
                     name="name"
-                    onChange={(e) => handleInputChange(e)}
-                    value={formObject.name}
+                    onChange={(e) => props.onChange(e)}
+                    value={props.formObject.name}
                     placeholder="Customer Name"
                     required /></td>
                 </tr>
@@ -44,8 +25,8 @@ function CustomerForm(props){
                   <td><input
                     type="email"
                     name="email"
-                    onChange={(e) => handleInputChange(e)}
-                    value={formObject.email}
+                    onChange={(e) => props.onChange(e)}
+                    value={props.formObject.email}
                     placeholder="name@company.com" /></td>
                 </tr>
                 <tr>
@@ -53,15 +34,15 @@ function CustomerForm(props){
                   <td><input
                     type="text"
                     name="password"
-                    onChange={(e) => handleInputChange(e)}
-                    value={formObject.password}
+                    onChange={(e) => props.onChange(e)}
+                    value={props.formObject.password}
                     placeholder="password" /></td>
                 </tr>
                 <tr className="button-bar">
                   <td colSpan="2">
-                    <input type="button" value="Delete" onClick={onDeleteClick} />
-                    <input type="button" value="Save" onClick={onSaveClick} />
-                    <input type="button" value="Cancel" onClick={onCancelClick} />
+                    <input type="button" value="Delete" onClick={props.onDeleteClick} />
+                    <input type="button" value="Save" onClick={props.onSaveClick} />
+                    <input type="button" value="Cancel" onClick={props.onCancelClick} />
                   </td>
                 </tr>
               </tbody>
@@ -69,10 +50,7 @@ function CustomerForm(props){
           </form>
         </div>
     </div>
-      
   );
-
-
 }
 
 export default CustomerForm;
