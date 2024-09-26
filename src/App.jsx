@@ -1,59 +1,70 @@
 import React, {useState, useEffect} from 'react';
-import { getAll, post, put, deleteById } from './data.js'
+import { getAll, post, put, deleteCustomer } from './data.js'
 import './App.css';
 
 function log(message){console.log(message);}
 
 export function App(params) {
 
-  let blankCustomer = { "id": -1, "name": "", "email": "", "password": "" };
-  
+  let blankCustomer = {"id": -1, "name": "", "email": ""}
+
   const [customers, setCustomers] = useState([]);
+
   const [formObject, setFormObject] = useState(blankCustomer);
-  let mode = (formObject.id >= 0) ? 'Update' : 'Add';
+
+  let mode = (formObject.id >= 0)? 'Update': 'Add';
 
   useEffect(() => { getCustomers() }, []);
   
-  const getCustomers =  function(){
-    console.log("in getCustomers()");
+  const getCustomers = function()
+  {
     setCustomers(getAll());
   }
 
-  const handleListClick = function(item){
-    console.log("in handleListClick()");
+  const handleListClick = function(item)
+  {
+    console.log("");
     if(formObject.id === item.id){
       setFormObject(blankCustomer);
-    }else{
+    } else {
       setFormObject(item);
     }
-  }  
+  }
 
-  const handleInputChange = function (event) {
-    console.log("in handleInputChange()");
-    const name = event.target.name;
-    const value = event.target.value;
-    let newFormObject = {...formObject}
+
+  const handleInputChange = function(event){
+    const name = event.currentTarget.name;
+    const value = event.currentTarget.value;
+    let newFormObject = {...formObject};
     newFormObject[name] = value;
     setFormObject(newFormObject);
   }
 
-  let onCancelClick = function () {
-    console.log("in onCancelClick()");
+
+  const onDeleteClick = function()
+  {
+    
+    setCustomers(deleteCustomer(formObject.id));
+
+  }
+
+  const onSaveClick = function()
+  {
+    console.log("save clicked");
+  }
+
+  const onCancelClick = function()
+  {
+    console.log("cancel clicked");
     setFormObject(blankCustomer);
   }
-
-  let onDeleteClick = function () {
-    console.log('delete clicked');
-  }
-
-let onSaveClick = function () {
-  console.log('save clicked');
-}
+  
 
   return (
     <div>
       <div className="boxed" >
         <h4>Customer List</h4>
+        <h4>{mode}</h4>
         <table id="customer-list">
           <thead>
             <tr>
