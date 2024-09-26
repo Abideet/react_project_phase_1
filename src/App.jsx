@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { getAll, putCustomer, deleteCustomer, postCustomer } from './data.js'
+import { getAll, putCustomer, deleteCustomer, postCustomer, post } from './data.js'
 import './App.css';
 import CustomerList from './components/CustomerList.jsx';
 import CustomerForm from './components/CustomerForm.jsx';
@@ -18,9 +18,10 @@ export function App(params) {
 
   useEffect(() => { getCustomers() }, []);
   
-  const getCustomers = function()
+  const getCustomers = function () 
   {
-    setCustomers(getAll());
+    log("in getCustomers()");
+    getAll(setCustomers);
   }
 
 
@@ -56,7 +57,7 @@ export function App(params) {
   const onSaveClick = function()
   {
     if(mode === 'Add'){
-      let newItems = postCustomer(formObject.name, formObject.email, formObject.password);
+      let newItems = post(formObject.name, formObject.email, formObject.password);
       setCustomers(newItems);
     } 
     if(mode === 'Update')
@@ -81,7 +82,6 @@ export function App(params) {
           <CustomerList 
             data={customers} 
             formObject={formObject} 
-            blankCustomer={blankCustomer} 
             mode={mode}
             onSelect={handleListClick}/>
 

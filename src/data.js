@@ -4,22 +4,46 @@ let items =
     {"id":2,"name":"Amalea Anan","email":"aanan1@cdbaby.com","password":"rL4@RGYr{8qjX"}
 ]
 
-export function getAll(){
-    return items;
-}
+// export function getAll(){
+//     return items;
+// }
 
-export function get(id)
+const baseURL = 'http://localhost:4000/customers';
+
+//getting data
+export async function getAll(setCustomers)
 {
-    let result = null;
-    for(let item in items){
-        if(item.id === id)
+    const myInit = {method: 'GET', mode: 'cors'};
+
+    const fetchData = async (url) => {
+        try 
         {
-            result = item;
+            const response = await fetch(url, myInit);
+            if(!response.ok)
+            {
+                throw new Error(`Error fetching data:' ${response.status}`);
+            }    
+            const data = await response.json();
+            setCustomers(data);
+        } catch (error)
+        {
+            alert(error);
         }
     }
-    return result;
+    fetchData(baseURL);
 }
 
+// export function get(id)
+// {
+//     let result = null;
+//     for(let item in items){
+//         if(item.id === id)
+//         {
+//             result = item;
+//         }
+//     }
+//     return result;
+// }
 
 export function deleteCustomer(id)
 {
@@ -28,11 +52,45 @@ export function deleteCustomer(id)
     return items;
 }
 
+export async function post(name, email, password)
+{
+    let id = getNextID();
+    const myInit = {method: 'POST', mode: 'cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({id , name, email, password})};
+        try 
+        {
+            const response = await fetch(baseURL, myInit);
+            if(!response.ok)
+            {
+                throw new Error(`Error fetching data:' ${response.status}`);
+            } 
+            const data = await response.json()
+            console.log("Sucess:", data);
+            return data;
+        }  
+        catch(error)
+        {
+            alert(error);
+        } 
+}
+
+
+
+
 export function postCustomer(name, email, password)
 {
     let id = getNextID();
     items.push({id, name, email, password});
     return items;
+}
+
+function getNextID()
+{
+    let maxid = 0;
+    for(let item of items)
+    {
+        maxid = (item.id > maxid)? item.id : maxid;
+    }
+    return maxid + 1;
 }
 
 export function putCustomer(id, name, email, password)
@@ -57,12 +115,3 @@ export function putCustomer(id, name, email, password)
 }
 
 
-function getNextID()
-{
-    let maxid = 0;
-    for(let item of items)
-    {
-        maxid = (item.id > maxid)? item.id : maxid;
-    }
-    return maxid + 1;
-}
