@@ -21,8 +21,8 @@ export function get(id)
 }
 
 
-export function deleteCustomer(id){
-
+export function deleteCustomer(id)
+{
     let newItems = items.filter(items => items.id !== id);
     return newItems;
 }
@@ -44,4 +44,3 @@ function getNextID()
     }
     return maxid + 1;
 }
-

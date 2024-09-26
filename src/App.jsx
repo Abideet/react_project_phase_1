@@ -54,6 +54,7 @@ export function App(params) {
       let newItems = postCustomer(formObject.name, formObject.email, formObject.password);
       setCustomers(newItems);
     }
+    setFormObject(blankCustomer);
   }
 
   const onCancelClick = function()
