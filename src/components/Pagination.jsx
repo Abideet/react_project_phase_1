@@ -1,18 +1,24 @@
 import React from 'react';
 
-const Pagination = ({ postsPerPage, length }) => {
-  const paginationNumbers = [];
+const Pagination = ({ customersPerPage, totalCustomers, paginate, currentPage }) => {
+  const pageNumbers = [];
 
-  for (let i = 1; i <= Math.ceil(length / postsPerPage); i++) {
-    paginationNumbers.push(i);
+  for (let i = 1; i <= Math.ceil(totalCustomers / customersPerPage); i++) {
+    pageNumbers.push(i);
   }
 
   return (
-    <div className='pagination'>
-      {paginationNumbers.map((pageNumber) => (
-        <button key={pageNumber}>{pageNumber}</button>
-      ))}
-    </div>
+    <nav>
+      <ul className='pagination'>
+        {pageNumbers.map(number => (
+          <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+            <a onClick={() => paginate(number)} href='!#' className='page-link'>
+              {number}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };
 
