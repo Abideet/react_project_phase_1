@@ -39,7 +39,6 @@ export function App(params) {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // ... (rest of your functions)
 
   return (
     <div>
