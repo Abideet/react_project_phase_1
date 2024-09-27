@@ -1,13 +1,13 @@
 h4 {
   margin: 0px;
-  padding: 5px;
+  padding: 0px;
   padding-left: 0px;
   font-family: sans-serif;
 }
 
 h5 {
   margin: 0px;
-  padding: 5px;
+  padding: 0px;
   font-family: sans-serif;
   font-weight: normal;
   padding-bottom:0px;
@@ -25,7 +25,7 @@ input[type='text'], input[type='email']{
 table,
 td,
 tr {
-  border: 1.3px solid #aaa;
+  border: 1.3px solid #800c0c;
   border-collapse: collapse;
   padding: 3px;
 }
@@ -42,7 +42,7 @@ form{
 
 div#root {
   background-color: lightgrey;
-  width: 600px;
+  width: 500px;
 }
 
 .boxed {

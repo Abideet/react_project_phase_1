@@ -14,7 +14,7 @@ export function App() {
 
   let mode = (formObject.id >= 0)? 'Update': 'Add';
 
-  useEffect(() => { getCustomers() }, []);
+  useEffect(() => { getCustomers() }, [formObject]);
   
   const getCustomers = function () 
   {
@@ -43,16 +43,8 @@ export function App() {
     setFormObject(newFormObject);
   }
 
-
-  // const onDeleteClick = function()
-  // {
-  //   if (window.confirm('Are you sure you want to delete this customer?')) 
-  //   {
-  //     setCustomers(deleteCustomer(formObject.id));
-  //   }
-  // }
-
-  const onDeleteClick = function () {
+  const onDeleteClick = function () 
+  {
     if(window.confirm('Are you sure you want to delete this customer?'))
     {
       let postopCallback = () => { setFormObject(blankCustomer); }
@@ -65,33 +57,15 @@ export function App() {
     }
   }
 
-  // const onSaveClick = function()
-  // {
-  //   if(mode === 'Add'){
-  //     let newItems = post(formObject.name, formObject.email, formObject.password);
-  //     setCustomers(newItems);
-  //   } 
-  //   if(mode === 'Update')
-  //   {
-  //     let newItems = putCustomer(formObject.id, formObject.name, formObject.email, formObject.password);
-  //     console.log(newItems);
-  //     setCustomers(newItems);
-  //   }
 
-  //   setFormObject(blankCustomer);
-  // }
-
-
-  const onSaveClick = function () 
+  let onSaveClick = function () 
   {
     let postopCallback = () => { setFormObject(blankCustomer); }
     if (mode === 'Add') {
       post(formObject, postopCallback);
-      getCustomers();
     }
     if (mode === 'Update') {
       put(formObject, postopCallback);
-      getCustomers();
     }
   }  
 
@@ -99,8 +73,7 @@ export function App() {
   {
     console.log("cancel clicked");
     setFormObject(blankCustomer);
-  }
-  
+  }  
 
   return (
     <div>
