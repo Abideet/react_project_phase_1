@@ -25,7 +25,7 @@ export function App() {
   }
 
 
-  const handleListClick = function(item)
+  const handleListClick =  useCallback((item) =>
   {
     console.log("");
     if(formObject.id === item.id){
@@ -33,7 +33,7 @@ export function App() {
     } else {
       setFormObject(item);
     }
-  }
+  }, []);
 
   const handleSearchChange = useCallback((event) => {
     setSearchQuery(event.target.value);

@@ -3,7 +3,6 @@ import React, {useState, useEffect} from 'react';
 
 function CustomerList(props){
     return(
-
         <div id="customer-list-div">
             <div className="boxed" id={"list-outer"} >
     
@@ -20,7 +19,8 @@ function CustomerList(props){
                 <tbody>
                 {props.data.map(
                     (item, index) => {
-                    return (<tr key={item.id} 
+                    return (<tr 
+                    key={item.id} 
                     className={ (item.id === props.formObject.id )?'selected': ''}
                     onClick={()=>props.onSelect(item)} 
                     >
