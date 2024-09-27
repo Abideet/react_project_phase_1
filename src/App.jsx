@@ -1,68 +1,126 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import { getAll, putCustomer, deleteCustomer, deleteById, postCustomer, put, post } from './data.js'
 import './App.css';
 import CustomerList from './components/CustomerList.jsx';
 import CustomerForm from './components/CustomerForm.jsx';
-import Pagination from './components/Pagination.jsx';
 
-export function App(params) {
-  const [customers, setCustomers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [customersPerPage] = useState(10);
 
+export function App() {
   let blankCustomer = {"id": -1, "name": "", "email": "", "password": ""};
+
+  const [customers, setCustomers] = useState([]);
+
   const [formObject, setFormObject] = useState(blankCustomer);
-  let mode = (formObject.id >= 0) ? 'Update' : 'Add';
 
-  useEffect(() => {
-    getCustomers();
-  }, []);
+  let mode = (formObject.id >= 0)? 'Update': 'Add';
 
-  const getCustomers = async function() {
-    setLoading(true);
-    try {
-      const data = await getAll();
-      setCustomers(data);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
+  useEffect(() => { getCustomers() }, []);
+  
+  const getCustomers = function () 
+  {
+    console.log("in getCustomers()");
+    getAll(setCustomers);
+  }
+
+
+  const handleListClick = function(item)
+  {
+    console.log("");
+    if(formObject.id === item.id){
+      setFormObject(blankCustomer);
+    } else {
+      setFormObject(item);
     }
   }
 
-  // Get current customers
-  const indexOfLastCustomer = currentPage * customersPerPage;
-  const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
-  const currentCustomers = customers.slice(indexOfFirstCustomer, indexOfLastCustomer);
 
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handleInputChange = function(event)
+  {
+    const name = event.currentTarget.name;
+    const value = event.currentTarget.value;
+    let newFormObject = {...formObject};
+    newFormObject[name] = value;
+    setFormObject(newFormObject);
+  }
 
+
+  // const onDeleteClick = function()
+  // {
+  //   if (window.confirm('Are you sure you want to delete this customer?')) 
+  //   {
+  //     setCustomers(deleteCustomer(formObject.id));
+  //   }
+  // }
+
+  const onDeleteClick = function () {
+    if(window.confirm('Are you sure you want to delete this customer?'))
+    {
+      let postopCallback = () => { setFormObject(blankCustomer); }
+      if (formObject.id >= 0) {
+        deleteById(formObject.id, postopCallback);
+        getCustomers();
+      } else {
+        setFormObject(blankCustomer);
+      }
+    }
+  }
+
+  // const onSaveClick = function()
+  // {
+  //   if(mode === 'Add'){
+  //     let newItems = post(formObject.name, formObject.email, formObject.password);
+  //     setCustomers(newItems);
+  //   } 
+  //   if(mode === 'Update')
+  //   {
+  //     let newItems = putCustomer(formObject.id, formObject.name, formObject.email, formObject.password);
+  //     console.log(newItems);
+  //     setCustomers(newItems);
+  //   }
+
+  //   setFormObject(blankCustomer);
+  // }
+
+
+  const onSaveClick = function () 
+  {
+    let postopCallback = () => { setFormObject(blankCustomer); }
+    if (mode === 'Add') {
+      post(formObject, postopCallback);
+      getCustomers();
+    }
+    if (mode === 'Update') {
+      put(formObject, postopCallback);
+      getCustomers();
+    }
+  }  
+
+  const onCancelClick = function()
+  {
+    console.log("cancel clicked");
+    setFormObject(blankCustomer);
+  }
+  
 
   return (
     <div>
-      <CustomerList 
-        data={currentCustomers} 
-        formObject={formObject} 
-        mode={mode}
-        onSelect={handleListClick}
-      />
-      <CustomerForm
-        formObject={formObject} 
-        mode={mode}
-        onChange={handleInputChange}
-        onDeleteClick={onDeleteClick}
-        onSaveClick={onSaveClick}
-        onCancelClick={onCancelClick}
-      />
-      <Pagination
-        customersPerPage={customersPerPage}
-        totalCustomers={customers.length}
-        paginate={paginate}
-        currentPage={currentPage}
-      />
-    </div>
+          <CustomerList 
+            data={customers} 
+            formObject={formObject} 
+            mode={mode}
+            onSelect={handleListClick}/>
+
+          <CustomerForm
+            formObject={formObject} 
+            mode={mode}
+            onChange={handleInputChange}
+            onDeleteClick={onDeleteClick}
+            onSaveClick={onSaveClick}
+            onCancelClick={onCancelClick}
+          />
+        </div>
+
+
   );
 }
 
