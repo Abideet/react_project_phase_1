@@ -12,6 +12,8 @@ export function App() {
 
   const [formObject, setFormObject] = useState(blankCustomer);
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   let mode = (formObject.id >= 0)? 'Update': 'Add';
 
   useEffect(() => { getCustomers() }, [formObject]);
@@ -33,6 +35,15 @@ export function App() {
     }
   }
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  }
+
+
+  const filteredCustomers = customers.filter(customer => 
+    customer.name.toLowerCase().includes(searchQuery.toLocaleLowerCase()) ||
+    customer.email.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+    );
 
   const handleInputChange = function(event)
   {
@@ -77,8 +88,15 @@ export function App() {
 
   return (
     <div>
+          <input
+          type="text"
+          placeholder="Search by name or email"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          />
+
           <CustomerList 
-            data={customers} 
+            data={filteredCustomers} 
             formObject={formObject} 
             mode={mode}
             onSelect={handleListClick}/>
