@@ -1,21 +1,20 @@
 import React, {useState, useEffect} from 'react';
-import { getAll, putCustomer, deleteCustomer, postCustomer } from '../data.js'
 
 
 function CustomerList(props){
     return(
 
-        <div>
-            <div className="boxed" >
+        <div id="customer-list-div">
+            <div className="boxed" id={"list-outer"} >
     
-            <h4>Customer List</h4>
-            <h4>{props.mode}</h4>
+            <h4 >Customer List</h4>
             <table id="customer-list">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Pass</th>
+                <thead >
+                <tr> 
+                    <th id="tb-head">Name</th>
+                    <th id="tb-head1">Email</th>
+                    <th id="tb-head2">Pass</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -35,9 +34,6 @@ function CustomerList(props){
             </table>
         </div>
       </div>
-
-
-
     );
 
 }

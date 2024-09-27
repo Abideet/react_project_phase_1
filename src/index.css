@@ -3,11 +3,15 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
+
+  
+
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+    
 }
 
 ul{
@@ -32,4 +36,21 @@ a{
 #root{
   width:fit-content;
 }
+
+input[type="button"]:hover{
+  opacity: 0.7;
+}
+
+input[type="button"][value="Cancel"]{
+  background-color: papayawhip;
+}
+
+input[type="button"][value="Save"]{
+  background-color: palegoldenrod;
+}
+
+input[type="button"][value="Delete"]{
+  background-color: palegreen;
+}
+
 

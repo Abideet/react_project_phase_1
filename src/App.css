@@ -73,11 +73,43 @@ div#root {
 
 table#customer-add-update tbody tr td.label{
   text-align: right;
+
+}
+
+#customer-list-div{
+  width: inherit;
+  margin:0px;
+  border: 0px;
+  background-color: palegreen;
 }
 
 #customer-list, table#customer-add-update {
   width: inherit;
   margin:0px;
   border: 0px;
+  background-color: papayawhip;
 }
 
+#app{
+  background-color: palegreen;
+}
+
+#list-outer{
+  background-color: palegoldenrod;
+}
+
+#div-boxed{
+  background-color: palegreen;
+}
+
+#tb-head{
+  background-color: palegreen;
+}
+
+#tb-head1{
+  background-color: palegreen;
+}
+
+#tb-head2{
+  background-color: palegreen;
+}

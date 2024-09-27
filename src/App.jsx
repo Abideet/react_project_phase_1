@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import { getAll, putCustomer, deleteCustomer, deleteById, postCustomer, put, post } from './data.js'
 import './App.css';
 import CustomerList from './components/CustomerList.jsx';
@@ -6,7 +6,7 @@ import CustomerForm from './components/CustomerForm.jsx';
 
 
 export function App() {
-  let blankCustomer = {"id": -1, "name": "", "email": "", "password": ""};
+  const blankCustomer = {"id": -1, "name": "", "email": "", "password": ""};
 
   const [customers, setCustomers] = useState([]);
 
@@ -35,9 +35,9 @@ export function App() {
     }
   }
 
-  const handleSearchChange = (event) => {
+  const handleSearchChange = useCallback((event) => {
     setSearchQuery(event.target.value);
-  }
+  }, []);
 
 
   const filteredCustomers = customers.filter(customer => 
@@ -69,8 +69,7 @@ export function App() {
   }
 
 
-  let onSaveClick = function () 
-  {
+  let onSaveClick = useCallback(() => {
     let postopCallback = () => { setFormObject(blankCustomer); }
     if (mode === 'Add') {
       post(formObject, postopCallback);
@@ -78,17 +77,18 @@ export function App() {
     if (mode === 'Update') {
       put(formObject, postopCallback);
     }
-  }  
+  }, [formObject]);
 
-  const onCancelClick = function()
-  {
+  const onCancelClick = useCallback(() => {
     console.log("cancel clicked");
     setFormObject(blankCustomer);
-  }  
+  }, []);
+
 
   return (
-    <div>
+    <div id="app">
           <input
+
           type="text"
           placeholder="Search by name or email"
           value={searchQuery}
