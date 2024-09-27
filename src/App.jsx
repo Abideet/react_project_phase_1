@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { getAll, putCustomer, deleteCustomer, postCustomer, post } from './data.js'
+import { getAll, putCustomer, deleteCustomer, deleteById, postCustomer, put, post } from './data.js'
 import './App.css';
 import CustomerList from './components/CustomerList.jsx';
 import CustomerForm from './components/CustomerForm.jsx';
@@ -7,6 +7,27 @@ import CustomerForm from './components/CustomerForm.jsx';
 function log(message){console.log(message);}
 
 export function App(params) {
+
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(10);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch("http://localhost:4000/customers");
+        const data = await response.json();
+        setCustomers(data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPosts();
+  }, []);
+
+
 
   let blankCustomer = {"id": -1, "name": "", "email": "", "password": ""};
 
@@ -46,29 +67,55 @@ export function App(params) {
   }
 
 
-  const onDeleteClick = function()
-  {
-    if (window.confirm('Are you sure you want to delete this customer?')) 
-    {
-      setCustomers(deleteCustomer(formObject.id));
-    }
+  // const onDeleteClick = function()
+  // {
+  //   if (window.confirm('Are you sure you want to delete this customer?')) 
+  //   {
+  //     setCustomers(deleteCustomer(formObject.id));
+  //   }
+  // }
+
+  const onDeleteClick = function () {
+    // if(window.confirm('Are you sure you want to delete this customer?'))
+    // {
+      let postopCallback = () => { setFormObject(blankCustomer); }
+      if (formObject.id >= 0) {
+        deleteById(formObject.id, postopCallback);
+      } else {
+        setFormObject(blankCustomer);
+      }
+    //}
   }
 
-  const onSaveClick = function()
-  {
-    if(mode === 'Add'){
-      let newItems = post(formObject.name, formObject.email, formObject.password);
-      setCustomers(newItems);
-    } 
-    if(mode === 'Update')
-    {
-      let newItems = putCustomer(formObject.id, formObject.name, formObject.email, formObject.password);
-      console.log(newItems);
-      setCustomers(newItems);
-    }
+  // const onSaveClick = function()
+  // {
+  //   if(mode === 'Add'){
+  //     let newItems = post(formObject.name, formObject.email, formObject.password);
+  //     setCustomers(newItems);
+  //   } 
+  //   if(mode === 'Update')
+  //   {
+  //     let newItems = putCustomer(formObject.id, formObject.name, formObject.email, formObject.password);
+  //     console.log(newItems);
+  //     setCustomers(newItems);
+  //   }
 
-    setFormObject(blankCustomer);
-  }
+  //   setFormObject(blankCustomer);
+  // }
+
+
+  const onSaveClick = function () 
+  {
+    let postopCallback = () => { setFormObject(blankCustomer); }
+    if (mode === 'Add') {
+      post(formObject, postopCallback);
+      getCustomers();
+    }
+    if (mode === 'Update') {
+      put(formObject, postopCallback);
+      getCustomers();
+    }
+  }  
 
   const onCancelClick = function()
   {
