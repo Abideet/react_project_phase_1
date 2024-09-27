@@ -3,11 +3,13 @@ import { getAll, putCustomer, deleteCustomer, deleteById, postCustomer, put, pos
 import './App.css';
 import CustomerList from './components/CustomerList.jsx';
 import CustomerForm from './components/CustomerForm.jsx';
+import Pagination  from './components/Pagination.jsx';
 
 function log(message){console.log(message);}
 
 export function App(params) {
 
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(10);
@@ -19,6 +21,7 @@ export function App(params) {
         const response = await fetch("http://localhost:4000/customers");
         const data = await response.json();
         setCustomers(data);
+        //setPosts(data);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -26,6 +29,10 @@ export function App(params) {
     };
     fetchPosts();
   }, []);
+
+  const handlePagination = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
 
 
@@ -126,6 +133,7 @@ export function App(params) {
 
   return (
     <div>
+
           <CustomerList 
             data={customers} 
             formObject={formObject} 
@@ -139,6 +147,11 @@ export function App(params) {
             onDeleteClick={onDeleteClick}
             onSaveClick={onSaveClick}
             onCancelClick={onCancelClick}
+          />
+          <Pagination
+            length={posts.length}
+            postsPerPage={postsPerPage}
+            handlePagination={handlePagination}
           />
         </div>
 
