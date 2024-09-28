@@ -9,17 +9,30 @@ function CustomerForm(props)
               <tbody>
                 <tr>
                   <td className={'label'} >Name:</td>
-                  <td><input
+                  <td>
+                  {props.name && (
+                        <span className="error-message">
+                            {props.name}
+                        </span>
+                    )}
+                    <input
                     type="text"
                     name="name"
                     onChange={(e) => props.onChange(e)}
                     value={props.formObject.name}
                     placeholder="Customer Name"
-                    required /></td>
+                    required />
+                    </td>
                 </tr>
                 <tr>
                   <td className={'label'} >Email:</td>
-                  <td><input
+                  <td>
+                  {props.email && (
+                        <span className="error-message">
+                            {props.email}
+                        </span>
+                    )}
+                    <input
                     type="email"
                     name="email"
                     onChange={(e) => props.onChange(e)}
@@ -28,7 +41,13 @@ function CustomerForm(props)
                 </tr>
                 <tr>
                   <td className={'label'} >Pass:</td>
-                  <td><input
+                  <td>
+                  {props.password && (
+                        <span className="error-message">
+                            {props.password}
+                        </span>
+                    )}
+                    <input
                     type="text"
                     name="password"
                     onChange={(e) => props.onChange(e)}

@@ -86,10 +86,11 @@ export function App() {
         }
         if (mode === 'Update') {
           put(formObject, postopCallback);
-      } else{
-        console.log('Form submission failed due to validation errors.');
-        window.confirm("Please make sure all fields are filled in");
-      }
+      } 
+      // else{
+      //   console.log('Form submission failed due to validation errors.');
+      //   window.confirm("Please make sure all fields are filled in");
+      // }
     }
   };
 
@@ -102,15 +103,17 @@ export function App() {
     console.log("data:", data)
     if (!data.name.trim()) {
         errors.name = 'Username is required';
-        //window.confirm('Username is required');
+        
     }
 
     if (!data.email.trim()) {
         errors.email = 'Email is required';
+       
     }
 
     if (!data.password) {
         errors.password = 'Password is required';
+       
     } 
     return errors;
 };
@@ -123,22 +126,25 @@ export function App() {
 
   return (
     <div id="app">
+        
           <input
           type="text"
           placeholder="Search by name or email"
           value={searchQuery}
           onChange={handleSearchChange}
           />
-
+          
           <CustomerList 
             data={filteredCustomers} 
             formObject={formObject} 
             mode={mode}
             onSelect={handleListClick}/>
 
+
           <CustomerForm
             formObject={formObject} 
             mode={mode}
+            {...errors}
             onChange={handleInputChange}
             onDeleteClick={onDeleteClick}
             onSaveClick={onSaveClick}
