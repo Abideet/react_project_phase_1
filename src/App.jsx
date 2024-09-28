@@ -10,6 +10,8 @@ export function App() {
 
   const [customers, setCustomers] = useState([]);
 
+  const [errors, setErrors] = useState({});
+
   const [formObject, setFormObject] = useState(blankCustomer);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,15 +27,15 @@ export function App() {
   }
 
 
-  const handleListClick =  useCallback((item) =>
+  const handleListClick = (item) => 
   {
-    console.log("");
+    console.log("list clicked");
     if(formObject.id === item.id){
       setFormObject(blankCustomer);
     } else {
       setFormObject(item);
     }
-  }, []);
+  };
 
   const handleSearchChange = useCallback((event) => {
     setSearchQuery(event.target.value);
@@ -69,15 +71,49 @@ export function App() {
   }
 
 
-  let onSaveClick = useCallback(() => {
+  let onSaveClick = (e) => {
+    e.preventDefault();
     let postopCallback = () => { setFormObject(blankCustomer); }
-    if (mode === 'Add') {
-      post(formObject, postopCallback);
+    const newErrors = validateForm(formObject);
+    setErrors(newErrors);
+
+    console.log("newErrors", Object.values(newErrors).length);
+
+
+    if(Object.values(newErrors).length === 0) {
+        if (mode === 'Add') {
+          post(formObject, postopCallback);
+        }
+        if (mode === 'Update') {
+          put(formObject, postopCallback);
+      } else{
+        console.log('Form submission failed due to validation errors.');
+        window.confirm("Please make sure all fields are filled in");
+      }
     }
-    if (mode === 'Update') {
-      put(formObject, postopCallback);
+  };
+
+
+
+
+  const validateForm = (data) => {
+    const errors = {};
+    
+    console.log("data:", data)
+    if (!data.name.trim()) {
+        errors.name = 'Username is required';
+        //window.confirm('Username is required');
     }
-  }, [formObject]);
+
+    if (!data.email.trim()) {
+        errors.email = 'Email is required';
+    }
+
+    if (!data.password) {
+        errors.password = 'Password is required';
+    } 
+    return errors;
+};
 
   const onCancelClick = useCallback(() => {
     console.log("cancel clicked");
@@ -88,7 +124,6 @@ export function App() {
   return (
     <div id="app">
           <input
-
           type="text"
           placeholder="Search by name or email"
           value={searchQuery}
