@@ -6,6 +6,7 @@ import CustomerForm from './components/CustomerForm.jsx';
 
 
 export function App() {
+
   const blankCustomer = {"id": -1, "name": "", "email": "", "password": ""};
 
   const [customers, setCustomers] = useState([]);
@@ -16,16 +17,17 @@ export function App() {
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  let mode = (formObject.id >= 0)? 'Update': 'Add';
+  let mode = ((formObject.id >= 0) ? 'Update' : 'Add');
 
-  useEffect(() => { getCustomers() }, [formObject]);
-  
-  const getCustomers = function () 
-  {
-    console.log("in getCustomers()");
+  //calls getCustomers each time after formObject changes
+  useEffect(() => {
+    getCustomers();
+  }, [formObject]);
+
+  const getCustomers = () =>{
+    console.log("in get customers");
     getAll(setCustomers);
   }
-
 
   const handleListClick = (item) => 
   {
